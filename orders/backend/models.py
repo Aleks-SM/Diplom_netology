@@ -20,6 +20,8 @@ class User(AbstractUser):
 class Shop(models.Model):
     name = models.CharField(max_length=50, verbose_name='Название')
     url = models.CharField(max_length=200, verbose_name='Ссылка', null=True, blank=True)
+    status = models.BooleanField(verbose_name='Статус получения заказ', default=True)
+    user = models.OneToOneField(User, verbose_name='Пользователь', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Магазин'
