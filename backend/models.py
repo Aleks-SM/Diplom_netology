@@ -36,7 +36,7 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-class ProuctInfo(models.Model):
+class ProductInfo(models.Model):
     product = models.ForeignKey(Product, verbose_name='Товар', on_delete=models.CASCADE)
     shop = models.ForeignKey(Shop, verbose_name='Магазин', on_delete=models.CASCADE)
     name = models.CharField(max_length=60, verbose_name='Not name')
