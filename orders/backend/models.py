@@ -35,8 +35,8 @@ class Category(models.Model):
     shops = models.ManyToManyField(Shop, verbose_name='Магазины')
 
     class Meta:
-        verbose_name = ('Категория')
-        verbose_name_plural = ('Список категорий')
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Список категорий'
 
     def __str__(self):
         return self.name
@@ -66,7 +66,7 @@ class ProductInfo(models.Model):
         verbose_name_plural = 'Информация о товарах'
 
     def __str__(self):
-        return self.name
+        return self.model
 
 class Parameter(models.Model):
     name = models.CharField(max_length=40)
@@ -74,32 +74,37 @@ class Parameter(models.Model):
     class Meta:
         pass
 
-class ProdustParameter:
-    product_info
-    parameter
-    value
-
-    class Meta:
-        pass
-class Order:
-    user
-    dt
-    status
+class ProductParameter(models.Model):
+    # product_info
+    # parameter
+    # value
+    pass
 
     class Meta:
         pass
 
-class OrderItem:
-    order
-    product
-    shop
-    quantity
+
+class Order(models.Model):
+    # user
+    # dt
+    # status
+    pass
+
+    class Meta:
+        pass
+
+class OrderItem(models.Model):
+    # order
+    # product
+    # shop
+    # quantity
+    pass
 
     class Meta:
         pass
 
 class Contact(models.Model):
-    type
+    # type
     user = models.ForeignKey(User, verbose_name='Пользователь', related_name='contacts', on_delete=models.CASCADE)
     city = models.CharField(max_length=30, verbose_name='Город')
     street = models.CharField(max_length=80, verbose_name='Улица')
