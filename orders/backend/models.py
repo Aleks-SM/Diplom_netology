@@ -10,6 +10,13 @@ class User(AbstractUser):
     position = models.CharField(max_length=40, verbose_name='Должность')
     username = models.CharField(max_length=60, unique=True)
 
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Список пользователей'
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name} {self.compamy}'
+
 class Shop(models.Model):
     name = models.CharField(max_length=50, verbose_name='Название')
     url = models.CharField(max_length=200, verbose_name='Ссылка', null=True, blank=True)
