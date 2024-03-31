@@ -1,9 +1,14 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+
 
 # Create your models here.
 
-class User:
-    pass
+class User(AbstractUser):
+    email = models.EmailField(unique=True)
+    compamy = models.CharField(max_length=40, verbose_name='Компания', unique=True)
+    position = models.CharField(max_length=40, verbose_name='Должность')
+    username = models.CharField(max_length=60, unique=True)
 
 class Shop(models.Model):
     name = models.CharField(max_length=50, verbose_name='Название')
