@@ -69,19 +69,26 @@ class ProductInfo(models.Model):
         return self.model
 
 class Parameter(models.Model):
-    name = models.CharField(max_length=40)
+    name = models.CharField(max_length=40, verbose_name='Название')
 
     class Meta:
-        pass
+        verbose_name = 'Наименование параметра'
+        verbose_name_plural = 'Список параметров'
+
+    def __str__(self):
+        return self.name
+
 
 class ProductParameter(models.Model):
-    # product_info
-    # parameter
-    # value
-    pass
+    product_info = models.ForeignKey(ProductInfo, verbose_name='not name', related_name='product_parametrs',
+                                     on_delete=models.CASCADE)
+    parameter = models.ForeignKey(Parameter, verbose_name='Параметр', related_name='',
+                                  on_delete=models.CASCADE)
+    value = models.CharField(max_length=40, verbose_name='')
 
     class Meta:
-        pass
+        verbose_name = 'Параметр'
+        verbose_name_plural = 'Список паратров'
 
 
 class Order(models.Model):
