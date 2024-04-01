@@ -91,25 +91,6 @@ class ProductParameter(models.Model):
         verbose_name_plural = 'Список паратров'
 
 
-class Order(models.Model):
-    # user
-    # dt
-    # status
-    pass
-
-    class Meta:
-        pass
-
-class OrderItem(models.Model):
-    # order
-    # product
-    # shop
-    # quantity
-    pass
-
-    class Meta:
-        pass
-
 class Contact(models.Model):
     # type
     user = models.ForeignKey(User, verbose_name='Пользователь', related_name='contacts', on_delete=models.CASCADE)
@@ -122,4 +103,31 @@ class Contact(models.Model):
     class Meta:
         verbose_name = 'Контакты пользователя'
         verbose_name_plural = 'Список контактов пользователя'
+
+
+class Order(models.Model):
+    user = models.ForeignKey(User, verbose_name='Пользователь', related_name='orders',
+                            on_delete=models.CASCADE)
+    date_order = models.DateTimeField()
+    status = models.CharField(max_length=15, verbose_name='Статус заказа')
+    contact = models.ForeignKey(Contact, verbose_name='Контакт', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Сптсок заказов'
+
+    def __str__(self):
+        return f'{self.date_order} {self.status}
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, verbose_name='Заказ', on_delete=models.CASCADE)
+    product_info = models.ForeignKey(ProductInfo, verbose_name='Информация о товаре', on_delete=models.CASCADE)
+    # shop =
+    # quantity
+    pass
+
+    class Meta:
+        pass
+
+
 
