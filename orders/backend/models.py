@@ -114,10 +114,10 @@ class Order(models.Model):
 
     class Meta:
         verbose_name = 'Заказ'
-        verbose_name_plural = 'Сптсок заказов'
+        verbose_name_plural = 'Список заказов'
 
     def __str__(self):
-        return f'{self.date_order} {self.status}
+        return f'{self.date_order} {self.status}'
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, verbose_name='Заказ', on_delete=models.CASCADE)
