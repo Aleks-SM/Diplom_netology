@@ -108,7 +108,7 @@ class Contact(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', related_name='orders',
                             on_delete=models.CASCADE)
-    date_order = models.DateTimeField()
+    date_order = models.DateTimeField(auto_now_add=True, verbose_name='Дата заказа')
     status = models.CharField(max_length=15, verbose_name='Статус заказа')
     contact = models.ForeignKey(Contact, verbose_name='Контакт', null=True,
                                 on_delete=models.CASCADE)
