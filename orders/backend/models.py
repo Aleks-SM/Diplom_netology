@@ -6,7 +6,7 @@ from django.db import models
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
-    compamy = models.CharField(max_length=40, verbose_name='Компания', unique=True)
+    company = models.CharField(max_length=40, verbose_name='Компания', unique=True)
     position = models.CharField(max_length=40, verbose_name='Должность')
     username = models.CharField(max_length=60, unique=True)
 
@@ -110,7 +110,8 @@ class Order(models.Model):
                             on_delete=models.CASCADE)
     date_order = models.DateTimeField()
     status = models.CharField(max_length=15, verbose_name='Статус заказа')
-    contact = models.ForeignKey(Contact, verbose_name='Контакт', on_delete=models.CASCADE)
+    contact = models.ForeignKey(Contact, verbose_name='Контакт', null=True,
+                                on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Заказ'
