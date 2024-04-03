@@ -123,11 +123,9 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, verbose_name='Заказ', on_delete=models.CASCADE)
     product_info = models.ForeignKey(ProductInfo, verbose_name='Информация о товаре', on_delete=models.CASCADE)
     # shop =
-    # quantity
+    quantity = models.PositiveIntegerField(verbose_name='Количество')
     pass
 
     class Meta:
-        pass
-
-
-
+        verbose_name = 'Заказанная позиция'
+        verbose_name_plural = 'Список позици'
