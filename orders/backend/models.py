@@ -82,9 +82,9 @@ class Parameter(models.Model):
 class ProductParameter(models.Model):
     product_info = models.ForeignKey(ProductInfo, verbose_name='not name', related_name='product_parametrs',
                                      on_delete=models.CASCADE)
-    parameter = models.ForeignKey(Parameter, verbose_name='Параметр', related_name='',
+    parameter = models.ForeignKey(Parameter, verbose_name='Параметр', related_name='product_parameters',
                                   on_delete=models.CASCADE)
-    value = models.CharField(max_length=40, verbose_name='product_parameters')
+    value = models.CharField(max_length=40, verbose_name='not name')
 
     class Meta:
         verbose_name = 'Параметр'
