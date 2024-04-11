@@ -16,7 +16,7 @@ class User(AbstractUser):
         ordering = ('email',)
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name} {self.compamy}'
+        return f'{self.first_name} {self.last_name}'
 
 class Shop(models.Model):
     name = models.CharField(max_length=50, verbose_name='Название', unique=True)
