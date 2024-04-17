@@ -19,6 +19,12 @@ class User(AbstractUser):
         return f'{self.first_name} {self.last_name}'
 
 class Shop(models.Model):
+    """
+    name - название магазина
+    url - url  или файл из которого загружаются товары
+    status  - статус заказа
+    user - пользователь
+    """
     name = models.CharField(max_length=50, verbose_name='Название', unique=True)
     url = models.CharField(max_length=200, verbose_name='Ссылка', null=True, blank=True)
     status = models.BooleanField(verbose_name='Статус получения заказ', default=True)
@@ -34,6 +40,10 @@ class Shop(models.Model):
         return self.name
 
 class Category(models.Model):
+    """
+    name - название категории
+    shops - поле связано с табл. Shop
+    """
     name = models.CharField(max_length=30, verbose_name='Название')
     shops = models.ManyToManyField(Shop, verbose_name='Магазины',
                                    related_name='categories', blank=True)
@@ -47,6 +57,10 @@ class Category(models.Model):
         return self.name
 
 class Product(models.Model):
+    """
+    name - наименование тоавра
+    category - категория товара, поле связано с табл. Category
+    """
     name = models.CharField(max_length=60, verbose_name='Наименование')
     category = models.ForeignKey(Category, verbose_name='Категория',
                                  related_name='products', on_delete=models.CASCADE, blank=True)
