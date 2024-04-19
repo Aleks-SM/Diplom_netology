@@ -6,7 +6,7 @@ from django.db import models
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
-    company = models.CharField(max_length=40, verbose_name='Компания', unique=True, blank=True) # параметр blank-True говорит Django о том что поле м.б. пустым
+    company = models.CharField(max_length=40, verbose_name='Компания', blank=True) # параметр blank-True говорит Django о том что поле м.б. пустым
     position = models.CharField(max_length=40, verbose_name='Должность', blank=True)
     username = models.CharField(max_length=60, unique=True)
 
