@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from orders.backend.models import User, Contact
+from .models import User, Contact
 
 
 class ContactSerializer(ModelSerializer):
@@ -7,11 +7,13 @@ class ContactSerializer(ModelSerializer):
         model = Contact
         fields = ('id', 'city', 'street', 'house', 'apartment',
                   'user', 'phone')
-        fields = ('id',)
+        read_only_fields = ('id',)
+        extra_kwargs = {'write_only': True}
 
 class UserSerializer(ModelSerializer):
-    class Mets:
+    contacts = ContactSerializer(many=True, read_only=True)
+    class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'company'
-                  'position', 'conracts')
-        fields = ('id',)
+        fields = ('id', 'first_name', 'last_name', 'email', 'company',
+                  'position', 'contacts')
+        read_only_fields = ('id',)
