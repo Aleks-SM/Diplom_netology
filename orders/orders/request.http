@@ -1,0 +1,16 @@
+# Регистрация пользователя
+# Если явно не указываем тип пользователя, то он создаётся по-умолчанию с типом "buyer"
+# То есть "покупатель"
+
+POST http://127.0.0.1:8000/api/v1/user/register
+Content-Type: application/json
+
+{
+  "first_name": "qwert",
+  "last_name": "qwerty",
+  "email": "qwert@yandex.ru",
+  "password": "qwer1234A",
+  "position": "345345",
+  "company": "qy-qy",
+  "contacts": "34-44"
+}
