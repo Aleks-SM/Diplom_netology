@@ -1,5 +1,5 @@
 from django.urls import path
-from orders.backend.views import RegisterAccount
+from .views import RegisterAccount
 
 app_name = 'backend'
 urlpatterns = [
