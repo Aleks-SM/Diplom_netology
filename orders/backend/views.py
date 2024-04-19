@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.views import APIView
 
-from orders.backend.serializers import UserSerializer
+from .serializers import UserSerializer
 
 def index_page(request):
     return HttpResponse("Hello")
@@ -17,7 +17,7 @@ class RegisterAccount(APIView):
         """
         проверяем аргументы
         """
-        if {'first_name', 'last_name', 'email', 'passwors', 'company', 'position'}.issubset(request.data):
+        if {'first_name', 'last_name', 'email', 'password', 'company', 'position'}.issubset(request.data):
             # проверка пароля
             try:
                 validate_password(request.data['password'])
@@ -36,4 +36,4 @@ class RegisterAccount(APIView):
                     return JsonResponse({'Status': True})
                 else:
                     return JsonResponse({'Status': False, 'Errors': user_serializer.errors})
-        return JsonResponse({'Staus': False, 'Errors': 'Не указаны обязательные значения'})
+        return JsonResponse({'Status': False, 'Errors': 'Не указаны обязательные значения'})
