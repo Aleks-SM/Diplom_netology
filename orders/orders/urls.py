@@ -16,10 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from orders.backend.views import RegisterAccount
+# from orders.backend.views import RegisterAccount
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('api/v1', include('orders.backend.urls', namespace='backend'))
+    path("api/v1/", include('backend.urls', namespace='backend'),)
 ]
