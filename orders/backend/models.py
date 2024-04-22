@@ -1,14 +1,22 @@
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 
 
-# Create your models here.
+USER_TYPE_CHOICES = (
+    ('shop', 'Магазин'),
+    ('buyer', 'Покупатель')
+)
+
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     company = models.CharField(max_length=40, verbose_name='Компания', blank=True) # параметр blank-True говорит Django о том что поле м.б. пустым
     position = models.CharField(max_length=40, verbose_name='Должность', blank=True)
-    username = models.CharField(max_length=60, unique=True)
+    username_validator = UnicodeUsernameValidator()
+    username = models.CharField(max_length=60, validators=[username_validator], unique=True)
+    type = models.CharField(max_length=5, verbose_name='Тип пользователя', default='buyer')
+    is_active = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Пользователь'
