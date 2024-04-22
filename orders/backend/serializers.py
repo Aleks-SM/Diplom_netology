@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import User, Contact
+from .models import User, Contact, Shop
 
 
 class ContactSerializer(ModelSerializer):
@@ -17,3 +17,10 @@ class UserSerializer(ModelSerializer):
         fields = ('id', 'first_name', 'last_name', 'email', 'company',
                   'position', 'contacts', 'username')
         read_only_fields = ('id',)
+
+class Shoperializer(ModelSerializer):
+    class Meta:
+        model = Shop
+        fields = ('id', 'name', 'status')
+        read_only_fields = ('id',)
+
