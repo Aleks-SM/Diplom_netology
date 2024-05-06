@@ -9,6 +9,7 @@ USER_TYPE_CHOICES = (
 )
 
 
+
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     company = models.CharField(max_length=40, verbose_name='Компания', blank=True) # параметр blank-True говорит Django о том что поле м.б. пустым
