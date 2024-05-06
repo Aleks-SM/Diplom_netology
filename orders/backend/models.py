@@ -180,5 +180,19 @@ class ConfirmEmailToken(models.Model):
         verbose_name = 'Токен потверждения email'
         verbose_name_plural = 'Токены потверждения'
 
-    def generate_key():
+    def generate_key(self):
         return get_token_generator().generate_token()
+
+    user = models.ForeignKey(User, verbose_name='',
+                             related_name='confirm_email_token',
+                             on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания token-a')
+    key = models.CharField(max_length=64, db_index=True, unique=True)
+
+    def save(self, *args, **kwargs):
+        if not self.key:
+            self.key = self.generate_key()
+        return super(ConfirmEmailToken, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return "Password reset token for {user}".format(user=self.user)
