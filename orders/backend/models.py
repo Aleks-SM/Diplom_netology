@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
+from django_rest_passwordreset.tokens import get_token_generator
 
 
 USER_TYPE_CHOICES = (
@@ -172,4 +173,12 @@ class OrderItem(models.Model):
 
     class Meta:
         verbose_name = 'Заказанная позиция'
-        verbose_name_plural = 'Список позици'
+        verbose_name_plural = 'Список позиций'
+
+class ConfirmEmailToken(models.Model):
+    class Meta:
+        verbose_name = 'Токен потверждения email'
+        verbose_name_plural = 'Токены потверждения'
+
+    def generate_key():
+        return get_token_generator().generate_token()
