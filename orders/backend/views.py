@@ -1,9 +1,11 @@
-from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import authenticate
 from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
 
+from models import ConfirmEmailToken
 from .serializers import UserSerializer
 
 def index_page(request):
@@ -36,4 +38,43 @@ class RegisterAccount(APIView):
                     return JsonResponse({'Status': True})
                 else:
                     return JsonResponse({'Status': False, 'Errors': user_serializer.errors})
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны обязательные значения'})
+        return JsonResponse({'Status': False, 'Errors': 'Указаны не все обязательные аргументы'})
+
+
+class ConfirmAccount(APIView):
+    """
+    потверждение почты
+    """
+    def post(self, request, *args, **kwargs):
+        """
+
+        """
+        # проверяем аргументы
+        if {'email', 'token'}.issubset(request.data):
+            token = ConfirmEmailToken.objects.filter(email=request.data['email'],
+                                                     key=request.data['token']).first()
+            if token:
+                token.user.is_active = True
+                token.user.save()
+                token.delete()
+                return JsonResponse({'Status': True})
+            else:
+                return JsonResponse({'Status': False, 'Errors': 'Неправильно указан токен или email'})
+        return JsonResponse({'Status': False, 'Errors': 'Указаны не все обязательные аргументы'})
+
+
+
+class LoginAccount(APIView):
+    """
+
+    """
+    def post(self, request, *args, **kwargs):
+        if {'email', 'password'}.issubset(request.data):
+            user = authenticate(request, username=request.data['email'], password=request.data['password'])
+            if user is not None:
+                if user.is_active:
+                    token, _ = Token.objects.get_or_create(user=user)
+                    return JsonResponse({'Status': True, 'Token': token.key})
+            return JsonResponse({'Status': False, 'Errors': 'Авторизация не удалась'})
+        return JsonResponse({'Status': False, 'Errors': 'Указаны не все обязательные аргументв'})
+
