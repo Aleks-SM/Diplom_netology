@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 
-from models import ConfirmEmailToken
+from .models import ConfirmEmailToken
 from .serializers import UserSerializer
 
 def index_page(request):
@@ -13,12 +13,13 @@ def index_page(request):
 
 class RegisterAccount(APIView):
     """
-
+    регистрация пользователей
     """
     def post(self, request, *args, **kwargs):
         """
-        проверяем аргументы
+        Create new user
         """
+        # проверяем аргументы
         if {'first_name', 'last_name', 'email', 'password', 'company', 'position'}.issubset(request.data):
             # проверка пароля
             try:
@@ -47,7 +48,7 @@ class ConfirmAccount(APIView):
     """
     def post(self, request, *args, **kwargs):
         """
-
+        Confirm user email
         """
         # проверяем аргументы
         if {'email', 'token'}.issubset(request.data):
@@ -61,6 +62,12 @@ class ConfirmAccount(APIView):
             else:
                 return JsonResponse({'Status': False, 'Errors': 'Неправильно указан токен или email'})
         return JsonResponse({'Status': False, 'Errors': 'Указаны не все обязательные аргументы'})
+
+
+class AccountDetail(APIView):
+    """
+
+    """
 
 
 
