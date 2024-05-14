@@ -4,6 +4,8 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 from .models import ConfirmEmailToken
 from .serializers import UserSerializer
@@ -68,6 +70,37 @@ class AccountDetail(APIView):
     """
 
     """
+    # получить данные
+    def get(self, request: Request, *arg, **kwargs):
+        if not request.user.is_authenticated:
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
+
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
+        # проверка обязательных аргументов
+        if 'password' in request.data:
+            errors = {}
+            # проверка пароля
+            try:
+                validate_password(request.data['password'])
+            except Exception as password_error:
+                error_list = []
+                for error in password_error:
+                    error_list.append(error)
+                return JsonResponse({'Status': False, 'Errors': {'password': error_list}})
+            else:
+                request.user.set_password(request.data['password'])
+
+        user_serialiser = UserSerializer(request.user, data=request.data, partial=True)
+        if user_serialiser.is_valid():
+            user_serialiser.save()
+            return JsonResponse({'Status': True})
+        else:
+            return JsonResponse({'Status': False, 'Errors': user_serialiser.errors})
 
 
 
