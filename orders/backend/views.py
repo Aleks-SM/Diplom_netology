@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.http import JsonResponse
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
@@ -6,12 +5,11 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.request import Request
 from rest_framework.response import Response
+from requests import get
 
 from .models import ConfirmEmailToken
 from .serializers import UserSerializer
 
-def index_page(request):
-    return HttpResponse("Hello")
 
 class RegisterAccount(APIView):
     """
@@ -118,4 +116,3 @@ class LoginAccount(APIView):
                     return JsonResponse({'Status': True, 'Token': token.key})
             return JsonResponse({'Status': False, 'Errors': 'Авторизация не удалась'})
         return JsonResponse({'Status': False, 'Errors': 'Указаны не все обязательные аргументв'})
-

@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django_rest_passwordreset.tokens import get_token_generator
+from rest_framework.authtoken.models import Token
 
 
 USER_TYPE_CHOICES = (
@@ -48,7 +49,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    REQUIRED_FIELDS = []
     objects = UserManager()
+    USERNAME_FIELD = 'email'
     email = models.EmailField(unique=True)
     # параметр blank=True говорит Django о том что поле м.б. пустым
     company = models.CharField(max_length=40, verbose_name='Компания', blank=True)

@@ -8,12 +8,12 @@ Content-Type: application/json
 {
   "first_name": "qwertr",
   "last_name": "qwerty",
-  "email": "qwertqe1@mail.ru",
+  "email": "qwertqe111@mail.ru",
   "password": "qwer1234A",
   "position": "345345",
   "company": "qy-qyy",
   "contacts": "34-44",
-  "username": "qaq"
+  "username": "qaqq1"
 }
 
 ###
@@ -34,7 +34,7 @@ POST http://localhost:8000/user/login
 Content-Type: application/json
 
 {
-  "email": "qwertqe1@mail.ru",
+  "email": "qwertqe111@mail.ru",
   "password": "qwer1234A"
 }
 
