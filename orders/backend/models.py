@@ -1,3 +1,4 @@
+from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
@@ -10,10 +11,47 @@ USER_TYPE_CHOICES = (
 )
 
 
+class UserManager(BaseUserManager):
+    """
+    Управление пользователями
+    """
+    use_in_migration = True
+
+    def _create_user(self, email, password, **extra_fields):
+        """
+
+        """
+        if not email:
+            raise ValueError('The given email must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self.db)
+        return user
+
+    def create_user(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(email, password, **extra_fields)
+
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staf=True')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True')
+
+        return self._create_user(email, password, **extra_fields)
+
 
 class User(AbstractUser):
+    objects = UserManager()
     email = models.EmailField(unique=True)
-    company = models.CharField(max_length=40, verbose_name='Компания', blank=True) # параметр blank-True говорит Django о том что поле м.б. пустым
+    # параметр blank=True говорит Django о том что поле м.б. пустым
+    company = models.CharField(max_length=40, verbose_name='Компания', blank=True)
     position = models.CharField(max_length=40, verbose_name='Должность', blank=True)
     username_validator = UnicodeUsernameValidator()
     username = models.CharField(max_length=60, validators=[username_validator], unique=True)
@@ -28,6 +66,7 @@ class User(AbstractUser):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
+
 class Shop(models.Model):
     """
     name - название магазина
@@ -35,6 +74,7 @@ class Shop(models.Model):
     status  - статус заказа
     user - пользователь
     """
+    object = models.manager.Manager()
     name = models.CharField(max_length=50, verbose_name='Название', unique=True)
     url = models.CharField(max_length=200, verbose_name='Ссылка', null=True, blank=True)
     status = models.BooleanField(verbose_name='Статус получения заказ', default=True)
@@ -49,11 +89,13 @@ class Shop(models.Model):
     def __str__(self):
         return self.name
 
+
 class Category(models.Model):
     """
     name - название категории
     shops - поле связано с табл. Shop
     """
+    object = models.manager.Manager()
     name = models.CharField(max_length=30, verbose_name='Название')
     shops = models.ManyToManyField(Shop, verbose_name='Магазины',
                                    related_name='categories', blank=True)
@@ -66,11 +108,13 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Product(models.Model):
     """
     name - наименование тоавра
     category - категория товара, поле связано с табл. Category
     """
+    object = models.manager.Manager()
     name = models.CharField(max_length=60, verbose_name='Наименование')
     category = models.ForeignKey(Category, verbose_name='Категория',
                                  related_name='products', on_delete=models.CASCADE, blank=True)
@@ -83,7 +127,9 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+
 class ProductInfo(models.Model):
+    object = models.manager.Manager()
     model = models.CharField(max_length=60, verbose_name='Not name', blank=True)
     product = models.ForeignKey(Product, verbose_name='Товар', related_name='product_info',
                                 on_delete=models.CASCADE, blank=True)
@@ -100,7 +146,9 @@ class ProductInfo(models.Model):
     def __str__(self):
         return self.model
 
+
 class Parameter(models.Model):
+    object = models.manager.Manager()
     name = models.CharField(max_length=40, verbose_name='Название')
 
     class Meta:
@@ -113,6 +161,7 @@ class Parameter(models.Model):
 
 
 class ProductParameter(models.Model):
+    object = models.manager.Manager()
     product_info = models.ForeignKey(ProductInfo, verbose_name='Информация о товаре',
                                      related_name='product_parametrs',
                                      on_delete=models.CASCADE, blank=True)
@@ -127,7 +176,7 @@ class ProductParameter(models.Model):
 
 
 class Contact(models.Model):
-    # type
+    object = models.manager.Manager()
     user = models.ForeignKey(User, verbose_name='Пользователь',
                              related_name='contacts',
                              on_delete=models.CASCADE, blank=True)
@@ -146,6 +195,7 @@ class Contact(models.Model):
 
 
 class Order(models.Model):
+    object = models.manager.Manager()
     user = models.ForeignKey(User, verbose_name='Пользователь',
                              related_name='orders',
                              on_delete=models.CASCADE, blank=True)
@@ -162,7 +212,9 @@ class Order(models.Model):
     def __str__(self):
         return f'{self.date_order} {self.status}'
 
+
 class OrderItem(models.Model):
+    object = models.manager.Manager()
     order = models.ForeignKey(Order, verbose_name='Заказ',
                               on_delete=models.CASCADE, blank=True)
     product_info = models.ForeignKey(ProductInfo, verbose_name='Информация о товаре',
@@ -175,7 +227,9 @@ class OrderItem(models.Model):
         verbose_name = 'Заказанная позиция'
         verbose_name_plural = 'Список позиций'
 
+
 class ConfirmEmailToken(models.Model):
+    object = models.manager.Manager()
     class Meta:
         verbose_name = 'Токен потверждения email'
         verbose_name_plural = 'Токены потверждения'
@@ -186,8 +240,11 @@ class ConfirmEmailToken(models.Model):
     user = models.ForeignKey(User, verbose_name='',
                              related_name='confirm_email_token',
                              on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания token-a')
-    key = models.CharField(max_length=64, db_index=True, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True,
+                                      verbose_name='Дата создания token-a')
+    key = models.CharField(max_length=64,
+                           db_index=True,
+                           unique=True)
 
     def save(self, *args, **kwargs):
         if not self.key:

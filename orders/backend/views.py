@@ -52,7 +52,7 @@ class ConfirmAccount(APIView):
         """
         # проверяем аргументы
         if {'email', 'token'}.issubset(request.data):
-            token = ConfirmEmailToken.objects.filter(email=request.data['email'],
+            token = ConfirmEmailToken.objects.filter(user__email=request.data['email'],
                                                      key=request.data['token']).first()
             if token:
                 token.user.is_active = True
@@ -73,11 +73,12 @@ class AccountDetail(APIView):
 
 class LoginAccount(APIView):
     """
-
+    авторизация пользователя
     """
     def post(self, request, *args, **kwargs):
         if {'email', 'password'}.issubset(request.data):
-            user = authenticate(request, username=request.data['email'], password=request.data['password'])
+            user = authenticate(request, username=request.data['email'],
+                                password=request.data['password'])
             if user is not None:
                 if user.is_active:
                     token, _ = Token.objects.get_or_create(user=user)
