@@ -43,7 +43,7 @@ class RegisterAccount(APIView):
         if {'first_name', 'last_name', 'email', 'password', 'company', 'position'}.issubset(request.data):
 
             # проверяем пароль на сложность
-            sad = 'asd'
+
             try:
                 validate_password(request.data['password'])
             except Exception as password_error:
@@ -443,7 +443,6 @@ class PartnerUpdate(APIView):
                     product, _ = Product.objects.get_or_create(name=item['name'], category_id=item['category'])
 
                     product_info = ProductInfo.objects.create(product_id=product.id,
-                                                              external_id=item['id'],
                                                               model=item['model'],
                                                               price=item['price'],
                                                               price_rrc=item['price_rrc'],

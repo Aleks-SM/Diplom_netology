@@ -8,12 +8,12 @@ Content-Type: application/json
 {
   "first_name": "qwertr",
   "last_name": "qwerty",
-  "email": "qwertqe111@mail.ru",
+  "email": "qwertqe@mail.ru",
   "password": "qwer1234A",
   "position": "345345",
   "company": "qy-qyy",
   "contacts": "34-44",
-  "username": "qaqq1"
+  "username": "qaq"
 }
 
 ###
@@ -23,18 +23,18 @@ Content-Type: application/json
  Content-Type: application/json
 
  {
-   "email": "qwertqe1@mail.ru",
+   "email": "qwertqe111@mail.ru",
    "token": "qwer1234Arwrgetregbegbg"
  }
 
 ###
 # Авторизация пользователя
 
-POST http://localhost:8000/user/login
+POST http://127.0.0.1:8000/api/v1/user/login
 Content-Type: application/json
 
 {
-  "email": "qwertqe111@mail.ru",
+  "email": "qwertqe116@mail.ru",
   "password": "qwer1234A"
 }
 
