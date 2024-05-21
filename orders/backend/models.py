@@ -3,7 +3,17 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django_rest_passwordreset.tokens import get_token_generator
-from rest_framework.authtoken.models import Token
+
+
+STATE_CHOICES = (
+    ('basket', 'Статус корзины'),
+    ('new', 'Новый'),
+    ('confirmed', 'Подтвержден'),
+    ('assembled', 'Собран'),
+    ('sent', 'Отправлен'),
+    ('delivered', 'Доставлен'),
+    ('canceled', 'Отменен'),
+)
 
 
 USER_TYPE_CHOICES = (
@@ -145,6 +155,9 @@ class ProductInfo(models.Model):
     class Meta:
         verbose_name = 'Информация о товаре'
         verbose_name_plural = 'Информация о товарах'
+        constraints = [
+            models.UniqueConstraint(fields=['product_info', 'parameter'], name='unique_product_parameter'),
+        ]
 
     def __str__(self):
         return self.model
@@ -176,6 +189,9 @@ class ProductParameter(models.Model):
     class Meta:
         verbose_name = 'Параметр'
         verbose_name_plural = 'Список паратров'
+        constraints = [
+            models.UniqueConstraint(fields=['product_info', 'parameter'], name='unique_product_parameter'),
+        ]
 
 
 class Contact(models.Model):
@@ -229,15 +245,20 @@ class OrderItem(models.Model):
     class Meta:
         verbose_name = 'Заказанная позиция'
         verbose_name_plural = 'Список позиций'
+        constraints = [
+            models.UniqueConstraint(fields=['order_id', 'product_info'], name='unique_order_item'),
+        ]
 
 
 class ConfirmEmailToken(models.Model):
     object = models.manager.Manager()
+
     class Meta:
         verbose_name = 'Токен потверждения email'
         verbose_name_plural = 'Токены потверждения'
 
-    def generate_key(self):
+    @staticmethod
+    def generate_key():
         return get_token_generator().generate_token()
 
     user = models.ForeignKey(User, verbose_name='',
