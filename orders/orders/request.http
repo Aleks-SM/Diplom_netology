@@ -8,24 +8,25 @@ Content-Type: application/json
 {
   "first_name": "qwertr",
   "last_name": "qwerty",
-  "email": "qwertqe3@mail.ru",
-  "password": "qwer1234A",
+  "email": "qwertqe4@mail.ru",
+  "password": "qwer1234qq",
   "position": "345345",
   "company": "qy-qyy",
   "contacts": "34-44",
-  "username": "qaq3",
+  "username": "qaq4",
   "type": "shop"
 }
 
 ###
 # Потверждение email пользователя
+# Токен из таблицы  backend_confirmemailtoken после успешной авторизации удаляется из таблицы
 
  POST http://127.0.0.1:8000/api/v1/user/register/confirm
 Content-Type: application/json
 
  {
-   "email": "qwertqe1@mail.ru",
-   "token": "f0be670ccf6ea5aa10fd0a22dc6f0811"
+   "email": "qwertqe4@mail.ru",
+   "token": "c764f782d5ea0ca6b6db3cd4ae67a1633c3dfeef0df5c1"
  }
 
 ###
@@ -35,8 +36,14 @@ POST http://127.0.0.1:8000/api/v1/user/login
 Content-Type: application/json
 
 {
-  "email": "qwertqe1@mail.ru",
-  "password": "qwer1234A"
+  "email": "qwertqe4@mail.ru",
+  "password": "qwer1234qq"
 }
 
 ###
+# Получение информации о пользователе
+# Токен берется из таблицы authtoken_token
+
+GET http://127.0.0.1:8000/api/v1/user/details
+Content-Type: application/json
+Authorization: Token 8886e192b616be261b2020c835c6862d0d9308ac
