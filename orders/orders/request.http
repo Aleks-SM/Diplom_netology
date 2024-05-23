@@ -8,23 +8,24 @@ Content-Type: application/json
 {
   "first_name": "qwertr",
   "last_name": "qwerty",
-  "email": "qwertqe@mail.ru",
+  "email": "qwertqe3@mail.ru",
   "password": "qwer1234A",
   "position": "345345",
   "company": "qy-qyy",
   "contacts": "34-44",
-  "username": "qaq"
+  "username": "qaq3",
+  "type": "shop"
 }
 
 ###
 # Потверждение email пользователя
 
  POST http://127.0.0.1:8000/api/v1/user/register/confirm
- Content-Type: application/json
+Content-Type: application/json
 
  {
-   "email": "qwertqe111@mail.ru",
-   "token": "qwer1234Arwrgetregbegbg"
+   "email": "qwertqe1@mail.ru",
+   "token": "f0be670ccf6ea5aa10fd0a22dc6f0811"
  }
 
 ###
@@ -34,7 +35,7 @@ POST http://127.0.0.1:8000/api/v1/user/login
 Content-Type: application/json
 
 {
-  "email": "qwertqe116@mail.ru",
+  "email": "qwertqe1@mail.ru",
   "password": "qwer1234A"
 }
 
