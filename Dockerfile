@@ -11,4 +11,4 @@ RUN pip install -r requirements.txt
 
 COPY . /usr/src/app
 
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:800"]
+CMD ["python3", "orders/manage.py", "runserver", "0.0.0.0:800"]
