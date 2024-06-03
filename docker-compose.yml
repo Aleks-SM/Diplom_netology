@@ -25,6 +25,7 @@ services:
 
   web:
     build: .
+    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
@@ -41,11 +42,26 @@ services:
     networks:
       dev_network:
 
+  celery:
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      - DJANGO_SETTINGS_MODULE=orders.settings
+      - SECRET_KEY=${SECRET_KEY}
+    depends_on:
+      - db
+      - redis
+    networks:
+      dev_network:
+
   nginx:
     image: nginx:1.19
     ports:
       - "80:80"
     volumes:
       - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - web
     networks:
       dev_network:
