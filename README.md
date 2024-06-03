@@ -1,14 +1,22 @@
 
 ## Cоздание проекта:
 
-1. ```django-admin startproject backend``` - Создание проекта под названием 'backend' 
-2. ```python manage.py startapp orders``` - Создание пиложения 'automatic_purchases' 
-3. ```python -m venv .venv``` - Создание 'виртуального окружения проекта'
-4. ```source venv/bin/activate``` - Активация 'виртуального окружения проекта' (Linux, MacOS)
-5. ```pip install -r requirements.txt``` - Установить зависимости 
-6. ```python manage.py makemigrations``` - Создаём файл миграций 
-7. ```python manage.py migrate``` - Запускаем миграции 
-8. ```python manage.py runserver``` - Запускаем сервер
+1. Создание проекта под названием 'orders'
+   ```django-admin startproject orders```  
+2. Создание приложения 'backend'
+   ```python manage.py startapp backend```
+3. Создание 'виртуального окружения проекта
+   ```python -m venv .venv```
+4. Активация 'виртуального окружения проекта' (Linux, MacOS)
+   ```source venv/bin/activate```
+5. Установить зависимости
+   ```pip install -r requirements.txt``` 
+6. Создать файл миграций 
+   ```python manage.py makemigrations```
+7. Применить миграции
+   ```python manage.py migrate```  
+8. Запуск сервера
+   ```python manage.py runserver```
  
 ## Создание контейнера docker:
 
