@@ -39,7 +39,7 @@ services:
       - db
       - redis
     networks:
-      - dev_network
+      dev_network:
 
   nginx:
     image: nginx:1.19
