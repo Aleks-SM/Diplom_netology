@@ -10,6 +10,8 @@ COPY ./requirements.txt /app
 RUN pip install --upgrade pip setuptools
 RUN pip install -r requirements.txt
 
-COPY . /app
+#COPY orders/orders /app
 
-CMD ["python3", "orders/manage.py", "runserver", "0.0.0.0:8000"]
+#CMD ["python3", "orders/manage.py", "runserver", "0.0.0.0:8000"]
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "orders.wsgi:application"]
